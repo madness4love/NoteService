@@ -166,6 +166,8 @@ object NoteService {
     }
 
     fun clearData() {
+        noteId = 0
+        commentId = 0
         noteMap.clear()
         commentMap.clear()
     }
