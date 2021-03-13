@@ -1,4 +1,3 @@
-import com.sun.org.apache.xpath.internal.operations.Bool
 
 object NoteService {
     var noteId = 0
@@ -164,5 +163,10 @@ object NoteService {
 
         commentMap[commentId] = comment.copy(delete = false)
         return true
+    }
+
+    fun clearData() {
+        noteMap.clear()
+        commentMap.clear()
     }
 }

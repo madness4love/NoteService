@@ -1,7 +1,19 @@
+import org.junit.After
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 
 class NoteServiceTest {
+
+    @Before
+    fun clearBefore() {
+        NoteService.clearData()
+    }
+
+    @After
+    fun clearAfter() {
+        NoteService.clearData()
+    }
 
     @Test
     fun add() {
@@ -29,7 +41,7 @@ class NoteServiceTest {
 
     @Test
     fun printNoteComments() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.add("Second note", "text2", 301585)
         NoteService.createComment(1, "first note comment2", 210422)
         NoteService.createComment(2, "second note comment", 210420)
@@ -47,12 +59,12 @@ class NoteServiceTest {
 
     @Test
     fun createComment_success() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.add("Second note", "text2", 301585)
 
         NoteService.createComment(1, "first note comment2", 210422)
 
-        val expected = Comment(1,1, "first note comment2", 210422)
+        val expected = Comment(1, 1, "first note comment2", 210422)
 
         val result = NoteService.getComment(1)[0]
 
@@ -62,7 +74,7 @@ class NoteServiceTest {
 
     @Test
     fun createComment_noteCommentsIntIncrease() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.add("Second note", "text2", 301585)
 
         NoteService.createComment(1, "first note comment2", 210422)
@@ -76,7 +88,7 @@ class NoteServiceTest {
 
     @Test(expected = NoteNotFoundException::class)
     fun createComment_exception() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.add("Second note", "text2", 301585)
 
         NoteService.createComment(234, "first note comment2", 210422)
@@ -84,7 +96,7 @@ class NoteServiceTest {
 
     @Test
     fun delete_success() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.add("Second note", "text2", 301585)
 
         val result = NoteService.delete(1)
@@ -94,7 +106,7 @@ class NoteServiceTest {
 
     @Test(expected = NoteNotFoundException::class)
     fun delete_exception() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.add("Second note", "text2", 301585)
 
         NoteService.delete(34)
@@ -102,7 +114,7 @@ class NoteServiceTest {
 
     @Test
     fun deleteComment_success() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.createComment(1, "first note comment2", 210422)
 
         assertTrue(NoteService.deleteComment(1))
@@ -110,7 +122,7 @@ class NoteServiceTest {
 
     @Test(expected = CommentNotFoundException::class)
     fun deleteComment_exception() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.createComment(1, "first note comment2", 210422)
         NoteService.deleteComment(2342)
     }
@@ -118,24 +130,24 @@ class NoteServiceTest {
     @Test
     fun edit_success() {
         NoteService.add("First note", "text", 210421)
-        val expected = Note(1,"new", "new text", 210421)
-        NoteService.edit(1,"new","new text")
+        val expected = Note(1, "new", "new text", 210421)
+        NoteService.edit(1, "new", "new text")
 
         val result = NoteService.getById(1)
 
-        assertEquals(expected,result)
+        assertEquals(expected, result)
     }
 
     @Test(expected = NoteNotFoundException::class)
     fun edit_exception() {
         NoteService.add("First note", "text", 210421)
 
-        NoteService.edit(345,"new","new text")
+        NoteService.edit(345, "new", "new text")
     }
 
     @Test
     fun editComment_success() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.createComment(1, "first note comment2", 210422)
 
         NoteService.editComment(1, "new comment")
@@ -148,7 +160,7 @@ class NoteServiceTest {
 
     @Test(expected = CommentNotFoundException::class)
     fun editComment_noComment() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.createComment(1, "first note comment2", 210422)
 
         NoteService.editComment(23, "new comment")
@@ -156,7 +168,7 @@ class NoteServiceTest {
 
     @Test(expected = CommentNotFoundException::class)
     fun editComment_commentDeleted() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.createComment(1, "first note comment2", 210422)
         NoteService.deleteComment(1)
 
@@ -165,7 +177,7 @@ class NoteServiceTest {
 
     @Test(expected = CommentLengthTooSmallException::class)
     fun editComment_commentTooSmall() {
-        NoteService.add("First note", "text",210421)
+        NoteService.add("First note", "text", 210421)
         NoteService.createComment(1, "first note comment2", 210422)
 
         NoteService.editComment(1, "n")
@@ -236,13 +248,13 @@ class NoteServiceTest {
     fun getComment_successDefaultSort() {
         NoteService.add("First note", "text", 210421)
         NoteService.add("Second note", "text2", 301585)
-        NoteService.createComment(1,"first note comment1", 210421)
-        NoteService.createComment(2,"first note comment2", 210422)
-        NoteService.createComment(1,"first note comment3", 210420)
-        NoteService.createComment(2,"first note comment4", 210427)
+        NoteService.createComment(1, "first note comment1", 210421)
+        NoteService.createComment(2, "first note comment2", 210422)
+        NoteService.createComment(1, "first note comment3", 210420)
+        NoteService.createComment(2, "first note comment4", 210427)
 
         val comment1 = Comment(1, 1, "first note comment1", 210421)
-        val comment2 = Comment(3, 1,"first note comment3", 210420)
+        val comment2 = Comment(3, 1, "first note comment3", 210420)
 
         val expected = mutableListOf(comment1, comment2)
         val result = NoteService.getComment(1)
@@ -255,13 +267,13 @@ class NoteServiceTest {
     fun getComment_successDescendingSort() {
         NoteService.add("First note", "text", 210421)
         NoteService.add("Second note", "text2", 301585)
-        NoteService.createComment(1,"first note comment1", 210421)
-        NoteService.createComment(2,"first note comment2", 210422)
-        NoteService.createComment(1,"first note comment3", 210420)
-        NoteService.createComment(2,"first note comment4", 210427)
+        NoteService.createComment(1, "first note comment1", 210421)
+        NoteService.createComment(2, "first note comment2", 210422)
+        NoteService.createComment(1, "first note comment3", 210420)
+        NoteService.createComment(2, "first note comment4", 210427)
 
         val comment1 = Comment(1, 1, "first note comment1", 210421)
-        val comment2 = Comment(3, 1,"first note comment3", 210420)
+        val comment2 = Comment(3, 1, "first note comment3", 210420)
 
         val expected = mutableListOf(comment2, comment1)
         val result = NoteService.getComment(1, 1)
@@ -274,19 +286,19 @@ class NoteServiceTest {
     fun getComment_exception() {
         NoteService.add("First note", "text", 210421)
         NoteService.add("Second note", "text2", 301585)
-        NoteService.createComment(1,"first note comment1", 210421)
-        NoteService.createComment(2,"first note comment2", 210422)
-        NoteService.createComment(1,"first note comment3", 210420)
-        NoteService.createComment(2,"first note comment4", 210427)
+        NoteService.createComment(1, "first note comment1", 210421)
+        NoteService.createComment(2, "first note comment2", 210422)
+        NoteService.createComment(1, "first note comment3", 210420)
+        NoteService.createComment(2, "first note comment4", 210427)
 
-       NoteService.getComment(5)
+        NoteService.getComment(5)
     }
 
     @Test
     fun restoreComment_success() {
         NoteService.add("First note", "text", 210421)
-        NoteService.createComment(1,"first note comment1", 210421)
-        NoteService.createComment(1,"first note comment3", 210420)
+        NoteService.createComment(1, "first note comment1", 210421)
+        NoteService.createComment(1, "first note comment3", 210420)
         NoteService.deleteComment(1)
 
         assertTrue(NoteService.restoreComment(1))
@@ -295,8 +307,8 @@ class NoteServiceTest {
     @Test(expected = CommentNotFoundException::class)
     fun restoreComment_commentDoesntExist() {
         NoteService.add("First note", "text", 210421)
-        NoteService.createComment(1,"first note comment1", 210421)
-        NoteService.createComment(1,"first note comment3", 210420)
+        NoteService.createComment(1, "first note comment1", 210421)
+        NoteService.createComment(1, "first note comment3", 210420)
 
         NoteService.restoreComment(24)
     }
@@ -304,17 +316,11 @@ class NoteServiceTest {
     @Test(expected = CommentNotFoundException::class)
     fun restoreComment_commentDoesntDeleted() {
         NoteService.add("First note", "text", 210421)
-        NoteService.createComment(1,"first note comment1", 210421)
-        NoteService.createComment(1,"first note comment3", 210420)
+        NoteService.createComment(1, "first note comment1", 210421)
+        NoteService.createComment(1, "first note comment3", 210420)
 
         NoteService.restoreComment(1)
     }
-
-
-
-
-
-
 
 
 }
